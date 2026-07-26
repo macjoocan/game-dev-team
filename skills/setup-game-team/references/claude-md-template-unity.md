@@ -1,0 +1,69 @@
+# CLAUDE.md 템플릿 — Unity (C#)
+
+웹 템플릿과 팀·파이프라인·게이트는 동일. "스택/실행/검증/아트 산출물" 레이어만 Unity에 맞춘 판이다.
+`<...>`는 플레이스홀더, 확정 못 한 값은 `<추정>`.
+
+---
+
+# <프로젝트명> — 게임 개발 팀 규칙 (CLAUDE.md · Unity)
+
+<장르/한 줄 소개>. **최종 권위자는 사람(당신)**이며, 모든 단계 전환은 사람 승인을 거친다.
+
+## 프로젝트 개요
+- 장르: <장르>
+- 스택: **Unity <버전> · C#**
+- 렌더/입력: <URP/Built-in · New Input System 등>
+- 실행: Unity Editor Play 모드 / CLI 배치모드
+  `"<UnityPath>/Unity" -batchmode -projectPath . -runTests -testPlatform EditMode`
+
+## 팀 구성 (허브-앤-스포크)
+```
+        [사람 = 최종 권위자]
+              │ 승인/지시
+        [오케스트레이터 = 메인 세션]
+        ┌────┬────┬────┬────┬────┐
+       pm  designer dev  qa  artist
+```
+- 에이전트는 서로 직접 대화하지 않는다. 오케스트레이터가 결과를 모아 다음 역할로 전달한다.
+
+| 에이전트 | 역할 |
+|---|---|
+| `pm` | 태스크 분해·우선순위·추적 |
+| `game-designer` | 기획/밸런스 설계·검토, 게임성 지표 정의·검증 |
+| `developer` | 프로토(스파이크)·본구현·시뮬 하네스 (C#) |
+| `qa` | 정확성 검증·코드 리뷰·Unity Test |
+| `artist` | 스프라이트/프리팹/UI 시안·톤 |
+
+## 파이프라인 & 게이트 (사람 승인 없이 다음 단계 금지)
+1. **기획/밸런스 + 게임성 지표 정의** (`game-designer`) — 게이트: 근거 없는 수치 0 · 미결 명시 · 게임성 지표 숫자로 정의.
+2. **태스크 분해** (`pm`).
+3. **프로토타입(스파이크)** (`developer`) — 버려도 되는 최소 구현. 핵심 재미만.
+4. **게임성 검증** (`game-designer` + `balance-sim`) — 헤드리스 시뮬로 지표 대조. 미충족 시 1번으로 되돌림(반복 루프).
+5. **본구현** (`developer`) — worktree 브랜치, 작은 커밋.
+6. **정확성 검증** (`qa`) — Unity Test(EditMode/PlayMode), 콘솔 에러 0.
+7. **아트** (`artist`) — 요청서 → 시안 → 승인.
+
+> 3↔4 반복 루프. 재미가 안 나오면 5로 안 넘어간다. QA(6, 버그) ≠ 게임성 검증(4, 재미/밸런스).
+
+## 코드 컨벤션 (Unity 전용 · 게임성 검증의 전제)
+- **어셈블리 분리(핵심)**: 전투/런 로직은 `Game.Core` 어셈블리(asmdef, **UnityEngine 미참조**)에 순수 C#으로 둔다.
+  MonoBehaviour·렌더·입력은 `Game.Unity` 어셈블리가 담당하고 Core를 참조한다.
+  → 이렇게 해야 Core만 떼어 `dotnet`/EditMode로 **헤드리스 몬테카를로**가 돈다(balance-sim 전제).
+- **밸런스 수치는 한 곳에**: ScriptableObject(에디터 편집용) ↔ 순수 C# 데이터(Core용)로 동기화하되, 로직에 하드코딩 금지.
+- **결정론적 RNG**: Core가 시드 주입형 RNG를 받는다(`System.Random(seed)` 또는 커스텀). 재현·비교 가능.
+- 씬/프리팹/머티리얼 등 에디터 자산은 developer가 Unity MCP로 다룬다(텍스트로 손대지 않는다).
+- Git LFS 사용, Unity용 `.gitignore`(Library/, Temp/, Logs/, Build/ 제외).
+
+## 게임성 성공 지표 (기획에서 채움)
+- 목표 승률 / 평균 런·전투 길이 / 전투당 의미 있는 선택 / 사망 분포 / 픽률 편중 / (해당 시)회복 예산: <값 또는 추정>
+
+## 검증 방법
+- 정확성: Unity Test Framework(NUnit) EditMode/PlayMode + 콘솔 에러 0. Unity MCP로 테스트 실행.
+- 게임성: `balance-sim` — `Game.Core`를 dotnet 콘솔/EditMode로 N판 시뮬 → 지표 대조. (상세: balance-sim/references/unity-headless-sim.md)
+
+## 권장 MCP
+- **Unity MCP**(CoplayDev/unity-mcp 또는 IvanMurzak/Unity-MCP) — 에디터/런타임/테스트 제어.
+- Blender MCP — 3D 에셋. GitHub/Linear/Notion — 코드·트래커·문서.
+
+## 사람(당신)의 승인 지점
+- 기획/게임성 지표 확정 · 게임성 검증 통과(본구현 착수) · 어셈블리/폴더 구조 승인 · 머지 · 아트 시안 선택
