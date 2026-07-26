@@ -32,6 +32,7 @@
 | `game-designer` | 기획/밸런스 설계·검토, 게임성 지표 정의·검증 |
 | `developer` | 프로토(스파이크)·본구현·시뮬 하네스 (C#) |
 | `qa` | 정확성 검증·코드 리뷰·Unity Test |
+| `meta-economy-designer` | 성장 구조·수익화·리텐션 설계·경제 검증 (core 통과 후) |
 | `artist` | 스프라이트/프리팹/UI 시안·톤 |
 
 ## 파이프라인 & 게이트 (사람 승인 없이 다음 단계 금지)
@@ -48,7 +49,7 @@
 ## 코드 컨벤션 (Unity 전용 · 게임성 검증의 전제)
 - **어셈블리 분리(핵심)**: 전투/런 로직은 `Game.Core` 어셈블리(asmdef, **UnityEngine 미참조**)에 순수 C#으로 둔다.
   MonoBehaviour·렌더·입력은 `Game.Unity` 어셈블리가 담당하고 Core를 참조한다.
-  → 이렇게 해야 Core만 떼어 `dotnet`/EditMode로 **헤드리스 몬테카를로**가 돈다(balance-sim 전제).
+  → 이렇게 해야 Core만 떼어 `dotnet`/EditMode로 **헤드리스 몬테카를로**가 돌다(balance-sim 전제).
 - **밸런스 수치는 한 곳에**: ScriptableObject(에디터 편집용) ↔ 순수 C# 데이터(Core용)로 동기화하되, 로직에 하드코딩 금지.
 - **결정론적 RNG**: Core가 시드 주입형 RNG를 받는다(`System.Random(seed)` 또는 커스텀). 재현·비교 가능.
 - 씬/프리팹/머티리얼 등 에디터 자산은 developer가 Unity MCP로 다룬다(텍스트로 손대지 않는다).
@@ -57,9 +58,30 @@
 ## 게임성 성공 지표 (기획에서 채움)
 - 목표 승률 / 평균 런·전투 길이 / 전투당 의미 있는 선택 / 사망 분포 / 픽률 편중 / (해당 시)회복 예산: <값 또는 추정>
 
+
+## 라이브 서비스 트랙 (core 게임성 통과 후에만 진입)
+> **전제: 파이프라인 4번(게임성 검증)이 통과해야 시작.** 재미없는 게임에 수익화를 붙이지 않는다.
+8. **메타/수익화 설계 + 경제 지표 정의** (`meta-economy-designer`)
+   - 성장 구조·재화 원장·수익화(가챠+광고+F2P)·리텐션 사이클.
+   - 게이트: 근거 없는 수치 0 · 무과금 진행 가능(F2P fairness) · 다크패턴 없음 · 확률 공개 등 컴플라이언스.
+9. **경제 검증** (`meta-economy-designer` + `econ-sim`)
+   - 코호트 시뮬로 리텐션·재화수지·전환율·LTV·무과금 완주율을 목표와 대조. 미달 시 8번으로 되돌림(반복 루프).
+10. **구현**(`developer`) → **정확성 QA**(`qa`).
+> 경제 검증(9, 지속가능/공정) ≠ 게임성 검증(4, 재미) ≠ QA(정확성).
+
+## 경제 성공 지표 (라이브 서비스 · meta-economy-designer가 채움)
+- 리텐션: D1 <값> / D7 <값> / D30 <값>
+- 무과금 완주: F2P 코호트 핵심 콘텐츠 완주율·소요 <값>
+- 재화 수지: 소스−싱크 균형(인플레 상한) <값>
+- 가챠: 기대 시행·천장 도달률·확률 공개 일치 <값>
+- 수익화: 전환율(payer%) / ARPPU / (참고)LTV <값>
+- 광고: 시청율·빈도 상한 <값>
+> 컴플라이언스: 확률형 아이템 확률 공개(지역별 법적 의무) 확인. 실제 출시 전 법률 검토 필요.
+
 ## 검증 방법
 - 정확성: Unity Test Framework(NUnit) EditMode/PlayMode + 콘솔 에러 0. Unity MCP로 테스트 실행.
 - 게임성: `balance-sim` — `Game.Core`를 dotnet 콘솔/EditMode로 N판 시뮬 → 지표 대조. (상세: balance-sim/references/unity-headless-sim.md)
+- 경제: `econ-sim`으로 코호트 N일 시뮬 → 경제 지표 대조.
 
 ## 권장 MCP
 - **Unity MCP**(CoplayDev/unity-mcp 또는 IvanMurzak/Unity-MCP) — 에디터/런타임/테스트 제어.
