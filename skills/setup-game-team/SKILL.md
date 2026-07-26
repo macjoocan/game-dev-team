@@ -28,14 +28,14 @@ description: >
 - **Unity** → `references/claude-md-template-unity.md`
 - **그 외(웹/Godot/Unreal 등)** → `references/claude-md-template.md`
 템플릿을 뼈대로 값을 채워 레포 루트에 `CLAUDE.md`로 쓴다. 규칙:
-- **0단계(컴션 발굴)+7단계 파이프라인**(컴션발굴→기획→분해→프로토→게임성검증→본구현→QA→아트) + **3↔4 반복 루프** + 사람 승인 게이트는 항상 포함(수정 금지 핵심).
+- **0단계(컴션 발굴)+7단계 파이프라인**(컴션발굴→기획→분해→프로토→게임성검증→본구현→QA→아트) + **3↔4 반복 루프** + **폴리싱 2패스(P1/P2)** + 사람 승인 게이트는 항상 포함(수정 금지 핵심).
 - "밸런스 수치는 한 곳에 모은다", "전투/런 로직은 UI·엔진과 분리(헤드리스 시뮬 가능)" 원칙 항상 포함.
   (Unity는 이 분리가 asmdef 어셈블리 분리로 구체화된다 — 템플릿 참조.)
 - 게임성 성공 지표 섹션 필수(미정이면 `<추정>`/미결 표기).
 - 추측 값은 `<추정>`으로 표시하고 사람 확인 항목으로 남긴다.
 
 ### 4. 확인 안내
-생성 후: (a) `.claude/agents/`에 6개 에이전트(meta-economy-designer 포함), `.claude/skills/`에 `concept-discovery`·`balance-sim`·`econ-sim`이 있는지,
+생성 후: (a) `.claude/agents/`에 6개 에이전트(meta-economy-designer 포함), `.claude/skills/`에 `concept-discovery`·`balance-sim`·`econ-sim`·`polish`가 있는지,
 (b) 첫 실행은 plan 모드로 게이트 확인, (c) 엔진별 MCP(웹=없음 / Unity=Unity MCP 등) 권장을 안내.
 
 ## 참고
