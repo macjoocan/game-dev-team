@@ -35,7 +35,7 @@ description: >
 - 추측 값은 `<추정>`으로 표시하고 사람 확인 항목으로 남긴다.
 
 ### 4. 확인 안내
-생성 후: (a) `.claude/agents/`에 5개 에이전트, `.claude/skills/`에 `balance-sim`이 있는지,
+생성 후: (a) `.claude/agents/`에 6개 에이전트(meta-economy-designer 포함), `.claude/skills/`에 `balance-sim`·`econ-sim`이 있는지,
 (b) 첫 실행은 plan 모드로 게이트 확인, (c) 엔진별 MCP(웹=없음 / Unity=Unity MCP 등) 권장을 안내.
 
 ## 참고
