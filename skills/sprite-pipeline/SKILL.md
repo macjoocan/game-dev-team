@@ -88,6 +88,8 @@ node skills/sprite-pipeline/scripts/sprite-qa.mjs <시트.png> --frames 8
 - 색은 같고 **형태만** 바뀌는 드리프트는 못 잡는다(색 분포로만 재기 때문에). 그건 사람이 본다.
 
 ## 흔한 실수
+OpenPose와 고정 캐릭터 레퍼런스로 포즈를 개별 생성하는 시안은 [선택적 2D 포즈 파일럿](../char-art-system/references/pose-reference-pilot.md)을 따른다. 공통 캔버스·baseline과 실제 크기 검수까지 해도 2프레임만으로 동작 연속성·타이밍을 판정하지 않는다.
+
 | 실수 | 교정 |
 |---|---|
 | 프레임마다 정체성이 흔들림 | seed 프레임 + 스트립 통째 생성 |
