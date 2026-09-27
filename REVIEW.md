@@ -25,9 +25,14 @@
 | ~~판정 도구 목록이 하드코딩이라 샌다~~ | v0.31.0 자동 탐지 (B-16 ④) |
 | ~~Codex 설치 입구가 없다 (INSTALL.md codex 0회)~~ | v0.35.0 설치 스크립트 하네스 자동 감지 (B-18) |
 | ~~신선도 검사기가 비교 대상을 안 밝혀 거짓 '최신'~~ | v0.35.0 `sourceInfo()` 출처 표기 (B-18) |
+| ~~Codex 에서 훅이 전부 exit 1~~ | v0.36.0 `${CLAUDE_PLUGIN_ROOT:-$PLUGIN_ROOT}` (B-19) |
 | ~~커밋 제목의 버전 번호가 두 번 어긋났다~~ | v0.33.0 (B-17 ②) — 사람이 "다음 릴리스에서 정리"로 정했고 그게 이 릴리스다 |
 
 ### 아직 열린 것 — 값어치 순
+
+0. **Codex 에서 훅 출력이 실제로 먹히는지 확인 안 됨** — 깨지지는 않지만(B-19),
+   Claude 스키마 출력을 Codex 가 컨텍스트로 주입하는지는 측정 불가다. Codex 세션에서
+   `state.json` 이 실제로 주입되는지 한 번만 확인하면 닫힌다. 값어치 대비 비용이 제일 싸다.
 
 1. **`flash-check`가 CSS 애니메이션을 못 읽는다** ← 가장 명확한 다음 후보.
    실사용에서 `측정 불가`로 나왔다(B-12). hex-danmaku의 명멸은 `blink 0.7s steps(2) infinite`
@@ -812,6 +817,67 @@ const dir = src?.source === 'directory' ? src.path : known?.[PLUGIN]?.installLoc
 출처를 감추면, 엉뚱한 대상과 비교해도 화면에는 "정상"이 뜬다. 판정값보다 **판정의
 입력**을 먼저 보여주는 게 안전하다. B-16 의 교훈("조용한 fail-open 은 없는 것과 같다")에
 한 줄 덧붙인다 — **출처를 감춘 통과는 실패보다 나쁘다.**
+
+---
+
+## B-19. Codex 설치를 쉽게 만들자 훅 3개가 전부 깨졌다 (v0.36.0)
+
+**증상.** v0.35.0 으로 Codex 설치가 한 명령이 된 직후, Codex 세션에서
+`hook exited with code 1` 이 **3건** 떴다.
+
+**근본 원인.** `hooks/hooks.json` 의 명령이 `${CLAUDE_PLUGIN_ROOT}` 를 쓴다.
+Codex 공식 문서:
+
+> Plugin-bundled hooks receive these environment variables: **`PLUGIN_ROOT`** ... and `PLUGIN_DATA`.
+
+Codex 에서는 `CLAUDE_PLUGIN_ROOT` 가 미정의라 명령이 `node "/scripts/..."` 로 전개되고
+모듈을 못 찾아 `exit 1` 이 된다. 스크립트는 멀쩡했다 — **명령줄이 틀렸다.**
+
+`~/.codex/config.toml` 에 실제로 등록돼 있었고 개수가 정확히 맞았다:
+
+```
+[hooks.state."game-dev-team@game-dev-team-local:hooks/hooks.json:pre_tool_use:0:0"]
+[hooks.state."game-dev-team@game-dev-team-local:hooks/hooks.json:session_start:0:0"]
+...
+```
+
+**문서가 틀렸던 지점.** `USAGE.md` 는 "Codex 는 훅이 안 된다 — 경로가 `${CLAUDE_PLUGIN_ROOT}`
+이고 **이벤트명이 Claude 체계**"라고 적고 있었다. 이벤트명은 **같다**
+(`SessionStart`·`PreToolUse`·`SubagentStop`). 그리고 `.codex-plugin/plugin.json` 이 hooks 를
+선언하지 않는데도 Codex 는 관례 경로로 읽는다. 즉 "안 된다"가 아니라 **"변수 하나가 다르다"**
+였고, 그 잘못된 이해 때문에 아무도 고칠 생각을 안 했다.
+
+**고친 것.** 명령을 셸 폴백으로 바꿨다 — 양쪽 하네스가 다 실제 환경변수를 export 하므로 동작한다:
+
+```
+node "${CLAUDE_PLUGIN_ROOT:-$PLUGIN_ROOT}/scripts/x.mjs"
+```
+
+| 조건 | 결과 |
+|---|---|
+| `CLAUDE_PLUGIN_ROOT` 만 (Claude) | exit 0 |
+| `PLUGIN_ROOT` 만 (Codex) | exit 0 |
+| 둘 다 없음 | exit 1 — **일부러 실패로 둔다.** 조용히 죽은 게이트보다 시끄러운 실패가 낫다(B-18) |
+
+**왜 CI 가 못 잡았나.** CI 는 훅 **스크립트**를 직접 실행해 fail-open 을 검사했지만,
+`hooks.json` 의 **명령줄**은 한 번도 실행하지 않았다. 검사 대상이 한 겹 어긋나 있었다.
+그래서 명령줄을 꺼내 두 하네스 조건으로 돌리는 스텝을 신설했다.
+
+**그 스텝을 처음엔 가짜 통과로 만들었다(자체 기록).** heredoc 종료자를 0열에 뒀더니
+YAML 블록 스칼라가 거기서 끝나 루프가 0회 돌았고, **폴백을 제거해도 통과**했다.
+같은 파일 위쪽에 "heredoc 은 YAML 블록 스칼라 안에서 얽히므로 쓰지 않는다"는 주석이
+이미 있었는데 어겼다. 임시 파일로 바꾸고, **루프 실행 횟수가 명령 개수와 같은지**를
+검사에 넣었다 — 0회 통과를 구조적으로 막는다.
+
+**남은 것(정직하게).** 훅이 **안 깨지는 것**과 **제 일을 하는 것**은 다르다. 우리 훅은
+Claude 스키마(`hookSpecificOutput.additionalContext`)로 출력하는데 Codex 가 그걸 읽어
+컨텍스트로 주입하는지는 **확인하지 못했다(측정 불가).** `USAGE.md` 에 그렇게 적었고,
+확인 전까지 Codex 에서는 `AGENTS.md` 가 유일하게 믿을 수 있는 경로다.
+
+**교훈.** 기능이 안 쓰이는 동안에는 깨져 있어도 아무도 모른다. 설치를 쉽게 만든 v0.35.0 이
+없었으면 이 버그는 계속 숨어 있었을 것이다 — **접근성을 높이는 변경은 그동안 가려져 있던
+결함을 같이 드러낸다.** 그리고 검사는 **실제로 실행되는 그 문자열**을 대상으로 해야 한다.
+스크립트를 아무리 검사해도 명령줄이 틀리면 소용없다.
 
 ---
 

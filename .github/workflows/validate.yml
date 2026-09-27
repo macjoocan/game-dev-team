@@ -433,3 +433,45 @@ jobs:
 
           rm -rf "$box"
           echo "신선도 검사기 통과 (출처 표기 · git 단정 금지 · directory 정상 · 뒤처짐 적출)"
+
+      # 지금까지 CI 는 훅 **스크립트**만 돌렸고 hooks.json 의 **명령줄**은 한 번도 안 돌렸다.
+      # 그 틈에서 실제 사고가 났다(REVIEW.md B-19): 명령이 ${CLAUDE_PLUGIN_ROOT} 를 쓰는데
+      # Codex 는 PLUGIN_ROOT 를 준다. Codex 도 hooks/hooks.json 을 관례로 읽으므로
+      # 설치하는 순간 훅 3개가 전부 exit 1 로 깨졌다. 스크립트는 멀쩡했고 명령줄이 틀렸다.
+      #
+      # heredoc 을 쓰지 마라(이 파일 위쪽 주석과 같은 이유). 종료자를 0열에 두면 YAML
+      # 블록 스칼라가 거기서 끝나고, 루프가 0회 돌면서 **통과처럼 보인다** — 실제로 그랬다.
+      - name: 훅 명령줄이 양쪽 하네스에서 도는지 (Claude · Codex 변수)
+        run: |
+          repo="$PWD"
+          box="$(mktemp -d)"
+          fail=0
+
+          # hooks.json 에 적힌 명령을 그대로 꺼낸다 (스크립트가 아니라 명령줄을 본다)
+          node -e 'const j=require("./hooks/hooks.json");for (const a of Object.values(j.hooks)) for (const g of a) for (const h of g.hooks) console.log(h.command);' > "$box/cmds.txt"
+          n=$(grep -c . "$box/cmds.txt" || true)
+          test "$n" -ge 4 || { echo "FAIL: hooks.json 에서 명령을 $n 개만 읽었다 (4 이상이어야 한다)"; exit 1; }
+
+          ran=0
+          while IFS= read -r cmd; do
+            [ -n "$cmd" ] || continue
+            ran=$((ran+1))
+            short=$(printf '%s' "$cmd" | grep -oE '[a-z-]+\.mjs' | head -1)
+
+            # Claude 조건: CLAUDE_PLUGIN_ROOT 만 있다
+            code=0
+            echo '{}' | env -u PLUGIN_ROOT CLAUDE_PLUGIN_ROOT="$repo" sh -c "$cmd" >/dev/null 2>&1 || code=$?
+            [ "$code" -eq 0 ] || { echo "FAIL(claude): $short -> exit $code"; fail=1; }
+
+            # Codex 조건: PLUGIN_ROOT 만 있다. 여기서 깨지면 Codex 설치가 세션을 깨뜨린다
+            code=0
+            echo '{}' | env -u CLAUDE_PLUGIN_ROOT PLUGIN_ROOT="$repo" sh -c "$cmd" >/dev/null 2>&1 || code=$?
+            [ "$code" -eq 0 ] || { echo "FAIL(codex): $short -> exit $code"; fail=1; }
+          done < "$box/cmds.txt"
+
+          # 루프가 0회 돌고 통과하는 걸 막는다. 빈 결과는 검사기 고장으로 취급한다.
+          test "$ran" -eq "$n" || { echo "FAIL: 명령 $n 개 중 $ran 개만 돌았다 — 루프가 깨졌다"; exit 1; }
+
+          rm -rf "$box"
+          test $fail -eq 0 || exit 1
+          echo "훅 명령줄 $n개 x 2조건 통과 (CLAUDE_PLUGIN_ROOT 단독 · PLUGIN_ROOT 단독)"
