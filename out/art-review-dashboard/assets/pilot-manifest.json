@@ -1,0 +1,340 @@
+{
+  "status": "concept-pilot",
+  "source": "original local ComfyUI graph with upstream IPAdapter Plus",
+  "reference": "assets\\generated\\pose_pilot\\anticipation.png",
+  "reference_weight": 0.75,
+  "seed": 270927,
+  "prompt": "single original 2D pixel game character, full body side view facing right, adult masked rooftop courier in a dark navy hooded jacket, simple cyan visor, one brass mechanical grappling gauntlet on the right forearm, dark boots, clear readable silhouette, flat colors, limited navy teal brass palette, character sprite concept, centered on a plain light gray background",
+  "negative": "multiple people, duplicate limbs, extra hands, cropped body, portrait, front view, three quarter view, detailed background, text, logo, watermark, photograph, 3d rendering, gradients, blur",
+  "models": [
+    {
+      "name": "sd_xl_base_1.0.safetensors",
+      "bytes": 6938078334,
+      "sha256": "31e35c80fc4829d14f90153f4c74cd59c90b779f6afe05a74cd6120b893f7e5b"
+    },
+    {
+      "name": "pixel-art-xl.safetensors",
+      "bytes": 170543052,
+      "sha256": "4234637cb80c998f41e348e6a6cb6bc20d8d038b2b0f256b6129b3b5e353eef7"
+    },
+    {
+      "name": "controlnet-openpose-sdxl.safetensors",
+      "bytes": 2502139104,
+      "sha256": "b8524e557a7df60d081f5d4a0eb109967d107df217943bf88c2d99b9ebcc06c5"
+    },
+    {
+      "name": "ip-adapter-plus_sdxl_vit-h.safetensors",
+      "bytes": 847517512,
+      "sha256": "3f5062b8400c94b7159665b21ba5c62acdcd7682262743d7f2aefedef00e6581"
+    },
+    {
+      "name": "CLIP-ViT-H-14-laion2B-s32B-b79K.safetensors",
+      "bytes": 2528373448,
+      "sha256": "6ca9667da1ca9e0b0f75e46bb030f7e011f44f86cbfb8d5a36590fcd7507b030"
+    }
+  ],
+  "results": [
+    {
+      "name": "anticipation",
+      "prompt_id": "75dbffdc-fc78-4afa-a867-f968129f81ab",
+      "elapsed_seconds": 8.2
+    },
+    {
+      "name": "contact",
+      "prompt_id": "a24231a0-274d-4449-94eb-c0d6828b8a1b",
+      "elapsed_seconds": 20.8
+    }
+  ],
+  "alpha_extraction": {
+    "method": "border-color distance, largest connected component, hard pixel mask",
+    "threshold": 30.0,
+    "status": "pilot; manual edge and shadow QA required",
+    "frames": [
+      {
+        "name": "anticipation",
+        "background_rgb": [
+          39,
+          74,
+          107
+        ],
+        "bounds": [
+          159,
+          40,
+          336,
+          481
+        ],
+        "foreground_pixels": 49163,
+        "baseline_shift_y": 0
+      },
+      {
+        "name": "contact",
+        "background_rgb": [
+          40,
+          75,
+          103
+        ],
+        "bounds": [
+          128,
+          39,
+          430,
+          496
+        ],
+        "foreground_pixels": 66043,
+        "baseline_shift_y": -15
+      }
+    ]
+  },
+  "ipadapter_node": {
+    "repository": "https://github.com/cubiq/ComfyUI_IPAdapter_plus",
+    "revision": "a0f451a5113cf9becb0847b92884cb10cbdec0ef",
+    "license": "GPL-3.0"
+  },
+  "runtime_preview": {
+    "size_per_frame": [
+      128,
+      128
+    ],
+    "files": [
+      "spritesheet_128_rgba.png",
+      "spritesheet_128_outlined.png",
+      "runtime_readability_preview.png",
+      "motion_preview.gif"
+    ],
+    "visual_qa": "Facing and costume colors improved; alpha and baseline align. Grappling arm detail and full action continuity remain unapproved."
+  },
+  "animation_export": {
+    "status": "web-visual-trial",
+    "frames": [
+      {
+        "name": "anticipation",
+        "background_rgb": [
+          39,
+          74,
+          107
+        ],
+        "bounds": [
+          159,
+          40,
+          336,
+          481
+        ],
+        "foreground_pixels": 49163,
+        "baseline_shift_y": 0,
+        "facing_correction": "none"
+      },
+      {
+        "name": "run_reach",
+        "background_rgb": [
+          43,
+          79,
+          106
+        ],
+        "bounds": [
+          127,
+          40,
+          384,
+          497
+        ],
+        "foreground_pixels": 57459,
+        "baseline_shift_y": -16,
+        "facing_correction": "none"
+      },
+      {
+        "name": "contact",
+        "background_rgb": [
+          40,
+          75,
+          103
+        ],
+        "bounds": [
+          128,
+          39,
+          430,
+          496
+        ],
+        "foreground_pixels": 66043,
+        "baseline_shift_y": -15,
+        "facing_correction": "none"
+      },
+      {
+        "name": "run_push",
+        "background_rgb": [
+          35,
+          73,
+          107
+        ],
+        "bounds": [
+          159,
+          40,
+          344,
+          489
+        ],
+        "foreground_pixels": 52641,
+        "baseline_shift_y": -8,
+        "facing_correction": "none"
+      },
+      {
+        "name": "jump",
+        "background_rgb": [
+          58,
+          91,
+          120
+        ],
+        "bounds": [
+          136,
+          39,
+          353,
+          473
+        ],
+        "foreground_pixels": 61664,
+        "baseline_shift_y": 8,
+        "facing_correction": "none"
+      },
+      {
+        "name": "hook",
+        "background_rgb": [
+          44,
+          79,
+          107
+        ],
+        "bounds": [
+          128,
+          41,
+          425,
+          495
+        ],
+        "foreground_pixels": 59237,
+        "baseline_shift_y": -14,
+        "facing_correction": "none"
+      },
+      {
+        "name": "takeoff",
+        "background_rgb": [
+          46,
+          71,
+          97
+        ],
+        "bounds": [
+          152,
+          39,
+          352,
+          497
+        ],
+        "foreground_pixels": 48022,
+        "baseline_shift_y": -16,
+        "facing_correction": "none"
+      },
+      {
+        "name": "fall",
+        "background_rgb": [
+          50,
+          76,
+          105
+        ],
+        "bounds": [
+          152,
+          64,
+          336,
+          456
+        ],
+        "foreground_pixels": 47846,
+        "baseline_shift_y": 25,
+        "facing_correction": "none"
+      },
+      {
+        "name": "land",
+        "background_rgb": [
+          55,
+          81,
+          107
+        ],
+        "bounds": [
+          127,
+          103,
+          368,
+          490
+        ],
+        "foreground_pixels": 60924,
+        "baseline_shift_y": -9,
+        "facing_correction": "none"
+      },
+      {
+        "name": "dash",
+        "background_rgb": [
+          57,
+          82,
+          110
+        ],
+        "bounds": [
+          104,
+          39,
+          424,
+          504
+        ],
+        "foreground_pixels": 62288,
+        "baseline_shift_y": -23,
+        "facing_correction": "none"
+      },
+      {
+        "name": "attack_windup",
+        "background_rgb": [
+          45,
+          71,
+          99
+        ],
+        "bounds": [
+          127,
+          23,
+          384,
+          497
+        ],
+        "foreground_pixels": 62911,
+        "baseline_shift_y": -16,
+        "facing_correction": "none"
+      },
+      {
+        "name": "attack_swing",
+        "background_rgb": [
+          53,
+          77,
+          106
+        ],
+        "bounds": [
+          128,
+          39,
+          456,
+          495
+        ],
+        "foreground_pixels": 71904,
+        "baseline_shift_y": -14,
+        "facing_correction": "none"
+      },
+      {
+        "name": "hit",
+        "background_rgb": [
+          62,
+          85,
+          112
+        ],
+        "bounds": [
+          104,
+          63,
+          321,
+          495
+        ],
+        "foreground_pixels": 58353,
+        "baseline_shift_y": -14,
+        "facing_correction": "horizontal flip"
+      }
+    ],
+    "size": [
+      128,
+      128
+    ],
+    "baseline_source_y": 481,
+    "outline_px": 1,
+    "sheet": "motion_sheet_128.png",
+    "run_sheet": "run_sheet_128.png",
+    "note": "Hand and equipment detail still require production QA."
+  }
+}

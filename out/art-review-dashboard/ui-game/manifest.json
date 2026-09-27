@@ -1,0 +1,200 @@
+{
+  "version": 1,
+  "generatedAt": "2026-09-27T14:36:46.779Z",
+  "status": "concept",
+  "generator": "../game-ui-gen.mjs",
+  "referenceProject": "D:/00.project/GameGogo/out_sanabi_final/sanabi_sprites/UI",
+  "referenceFiles": [
+    "UI_UI_IngameMenu_SelectBox.png",
+    "UI_UI_ChapterSelect_Chapter1_Box_Select_1.png",
+    "UI_UI_DummyBossHP.png"
+  ],
+  "sourceUsage": "Visual measurement only. No source pixels or game files included.",
+  "palette": {
+    "void": "#001d23",
+    "deep": "#002929",
+    "panel": "#004646",
+    "rail": "#005b5b",
+    "muted": "#007575",
+    "cyan": "#00f3f2",
+    "cyanDim": "#00b2b2",
+    "amber": "#ffca58",
+    "white": "#e7ffff",
+    "disabled": "#527b7d"
+  },
+  "assets": [
+    {
+      "id": "btn_primary_normal",
+      "file": "btn_primary_normal.png",
+      "width": 320,
+      "height": 88,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "nineSlice": [
+        28,
+        28,
+        28,
+        28
+      ],
+      "status": "concept"
+    },
+    {
+      "id": "btn_primary_selected",
+      "file": "btn_primary_selected.png",
+      "width": 320,
+      "height": 88,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "nineSlice": [
+        28,
+        28,
+        28,
+        28
+      ],
+      "status": "concept"
+    },
+    {
+      "id": "btn_primary_pressed",
+      "file": "btn_primary_pressed.png",
+      "width": 320,
+      "height": 88,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "nineSlice": [
+        28,
+        28,
+        28,
+        28
+      ],
+      "status": "concept"
+    },
+    {
+      "id": "btn_primary_disabled",
+      "file": "btn_primary_disabled.png",
+      "width": 320,
+      "height": 88,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "nineSlice": [
+        28,
+        28,
+        28,
+        28
+      ],
+      "status": "concept"
+    },
+    {
+      "id": "btn_accent_normal",
+      "file": "btn_accent_normal.png",
+      "width": 320,
+      "height": 88,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "nineSlice": [
+        28,
+        28,
+        28,
+        28
+      ],
+      "status": "concept"
+    },
+    {
+      "id": "panel_frame",
+      "file": "panel_frame.png",
+      "width": 384,
+      "height": 384,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "nineSlice": [
+        30,
+        30,
+        30,
+        30
+      ],
+      "status": "concept"
+    },
+    {
+      "id": "popup_bg",
+      "file": "popup_bg.png",
+      "width": 512,
+      "height": 640,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "nineSlice": [
+        34,
+        34,
+        34,
+        34
+      ],
+      "status": "concept"
+    },
+    {
+      "id": "chapter_card",
+      "file": "chapter_card.png",
+      "width": 256,
+      "height": 320,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "nineSlice": null,
+      "status": "concept"
+    },
+    {
+      "id": "bar_track",
+      "file": "bar_track.png",
+      "width": 320,
+      "height": 44,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "nineSlice": null,
+      "status": "concept"
+    },
+    {
+      "id": "bar_fill",
+      "file": "bar_fill.png",
+      "width": 320,
+      "height": 44,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "nineSlice": null,
+      "status": "concept"
+    },
+    {
+      "id": "skill_slot",
+      "file": "skill_slot.png",
+      "width": 96,
+      "height": 96,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "nineSlice": null,
+      "status": "concept"
+    }
+  ],
+  "qa": {
+    "visual": "pending human review",
+    "smallScreen": "pending",
+    "engineIntegration": "not tested",
+    "accessibility": "not tested"
+  }
+}

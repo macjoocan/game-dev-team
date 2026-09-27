@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>캐릭터 아트 시각 검수 | GameDevTeam</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="masthead">
+      <div class="brand"><span class="brand-mark">G</span><span>GAMEDEVTEAM <small>/ ART REVIEW</small></span></div>
+      <span class="top-status"><span class="status-dot"></span> CONCEPT PILOT · 승인 전</span>
+    </header>
+    <main>
+      <section class="intro">
+        <div><p class="eyebrow">VISUAL QA / 2026.09.27</p><h1>캐릭터 아트<br><em>화면 검수</em></h1><p class="lead">128px 게임 표시 크기로 포즈와 외곽선을 직접 비교하세요. 아래 판정은 브라우저에만 저장되며, 승인 상태를 바꾸지 않습니다.</p></div>
+        <div class="intro-stats"><div><strong>13</strong><span>확장 포즈 시안</span></div><div><strong>128<span class="unit">px</span></strong><span>기준 표시 크기</span></div><div><strong>2</strong><span>외곽선 비교안</span></div></div>
+      </section>
+
+      <div class="workspace">
+        <section class="panel viewer-panel" aria-labelledby="viewer-title">
+          <div class="section-head"><div><p class="eyebrow">01 / RUNTIME CONTEXT</p><h2 id="viewer-title">배경 위에서 보기</h2></div><span class="pill">게임 배경 크롭 · 512 × 256</span></div>
+          <div class="controls">
+            <label>포즈<select id="poseSelect"></select></label>
+            <fieldset><legend>외곽선</legend><button type="button" class="seg active" data-outline="on">1px 있음</button><button type="button" class="seg" data-outline="off">없음</button></fieldset>
+            <label>표시 크기<select id="sizeSelect"><option value="128">128px 기준</option><option value="96">96px</option><option value="64">64px</option></select></label>
+          </div>
+          <div class="stage-wrap"><div class="stage-label"><span class="live-dot"></span> 1:1 실제 픽셀 · 확대 표시 없음</div><div class="stage" id="stage"><div class="ground"></div><img id="stageSprite" alt="선택한 캐릭터 포즈" draggable="false"></div></div>
+          <div class="viewer-note"><span id="poseMeta">기준 포즈: anticipation</span><span>장비 형태 · 실루엣 · 배경 분리를 확인</span></div>
+          <div class="compare"><div><span>원본 비교 · 외곽선 없음</span><img src="assets/runtime_readability_preview.png" class="preview-top" alt="외곽선 없는 두 포즈의 게임 배경 비교"></div><div><span>원본 비교 · 1px 외곽선</span><img src="assets/runtime_readability_preview.png" class="preview-bottom" alt="1픽셀 외곽선이 있는 두 포즈의 게임 배경 비교"></div></div>
+        </section>
+
+        <aside class="side">
+          <section class="panel inspect-panel"><p class="eyebrow">02 / ALPHA & EDGES</p><h2>투명 경계</h2><p>밝은 배경과 어두운 배경을 바꿔 가장자리, 그림자, 고아 픽셀을 확인하세요.</p><div class="bg-control"><button type="button" class="bg-choice active" data-bg="checker">체커</button><button type="button" class="bg-choice" data-bg="dark">어두움</button><button type="button" class="bg-choice" data-bg="light">밝음</button></div><div class="alpha-stage checker" id="alphaStage"><img id="alphaSprite" alt="선택한 포즈의 알파 경계 확대 보기" draggable="false"></div><div class="mini-legend"><span>게임 표시 크기 대비 2×</span><span>원본 RGBA 사용</span></div></section>
+          <section class="panel limits"><p class="eyebrow">KNOWN GAPS</p><h2>아직 확인되지 않은 것</h2><ul><li>황동 그래플링 팔의 형태가 약함</li><li>프레임 간 타이밍과 완전한 연속 동작</li><li>실제 게임플레이 삽입과 바쁜 UI 화면</li><li>투명 경계·그림자의 수동 정리</li></ul><span class="note-tag">현재 상태: concept-pilot</span></section>
+        </aside>
+      </div>
+
+      <section class="panel motion-panel"><div class="section-head"><div><p class="eyebrow">03 / POSE BOARD</p><h2>포즈 시안 한눈에</h2></div><span class="pill">타이밍 검증 자료 아님</span></div><p class="section-sub">카드를 누르면 위 비교 화면으로 이동합니다. 동일한 정체성, 장비, 발 기준선이 유지되는지 보세요.</p><div id="poseGrid" class="pose-grid"></div></section>
+
+      <section class="review-layout"><section class="panel checklist-panel"><div class="section-head"><div><p class="eyebrow">04 / YOUR REVIEW</p><h2>내 검수 기록</h2></div><button id="exportBtn" class="export" type="button">결과 JSON 저장 ↗</button></div><p class="section-sub">각 항목을 직접 골라주세요. 선택 내용은 이 브라우저에 임시 저장됩니다.</p><div id="checklist"></div><label class="notes-label" for="reviewNotes">추가 메모</label><textarea id="reviewNotes" rows="4" placeholder="예: contact에서 팔 장비가 손처럼 보여 구분이 어렵다"></textarea></section><section class="panel evidence-panel"><p class="eyebrow">SOURCE / EVIDENCE</p><h2>이 화면의 근거</h2><dl><dt>원본</dt><dd>sanabi-prototype / pose_reference_pilot</dd><dt>실험</dt><dd>SDXL + OpenPose + IP-Adapter Plus</dd><dt>레퍼런스 가중치</dt><dd>0.75 · 고정 시드 270927</dd><dt>배경</dt><dd>프로토타입 생성 배경 크롭</dd><dt>표시</dt><dd>128px 기준 · nearest-neighbor</dd><dt>상태</dt><dd>시안, 사람 승인 전</dd></dl><a href="assets/pilot-manifest.json" target="_blank" rel="noopener">원본 manifest 열기 ↗</a><a href="assets/motion_preview.gif" target="_blank" rel="noopener">기존 모션 미리보기 GIF ↗</a><a href="assets/motion_sheet_128.png" target="_blank" rel="noopener">13포즈 시트 열기 ↗</a><a href="assets/spritesheet_checker_preview.png" target="_blank" rel="noopener">체커 배경 원본 열기 ↗</a></section></section>
+    </main>
+    <footer>GameDevTeam · 시각 검수용 로컬 샘플 · 원본 파일과 검수 결과는 별도로 관리</footer>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

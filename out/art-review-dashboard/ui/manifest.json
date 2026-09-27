@@ -1,0 +1,141 @@
+{
+  "generatedFrom": "ui-spec.json",
+  "sprites": [
+    {
+      "name": "btn_primary_normal",
+      "file": "btn_primary_normal.png",
+      "w": 320,
+      "h": 112,
+      "nineSlice": {
+        "left": 44,
+        "bottom": 48,
+        "right": 44,
+        "top": 44
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pixelsPerUnit": 100
+    },
+    {
+      "name": "btn_primary_pressed",
+      "file": "btn_primary_pressed.png",
+      "w": 320,
+      "h": 112,
+      "nineSlice": {
+        "left": 44,
+        "bottom": 48,
+        "right": 44,
+        "top": 44
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pixelsPerUnit": 100
+    },
+    {
+      "name": "btn_primary_disabled",
+      "file": "btn_primary_disabled.png",
+      "w": 320,
+      "h": 112,
+      "nineSlice": {
+        "left": 44,
+        "bottom": 48,
+        "right": 44,
+        "top": 44
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pixelsPerUnit": 100
+    },
+    {
+      "name": "btn_accent_normal",
+      "file": "btn_accent_normal.png",
+      "w": 320,
+      "h": 112,
+      "nineSlice": {
+        "left": 44,
+        "bottom": 48,
+        "right": 44,
+        "top": 44
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pixelsPerUnit": 100
+    },
+    {
+      "name": "panel_frame",
+      "file": "panel_frame.png",
+      "w": 384,
+      "h": 384,
+      "nineSlice": {
+        "left": 58,
+        "bottom": 62,
+        "right": 58,
+        "top": 58
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pixelsPerUnit": 100
+    },
+    {
+      "name": "popup_bg",
+      "file": "popup_bg.png",
+      "w": 512,
+      "h": 640,
+      "nineSlice": {
+        "left": 70,
+        "bottom": 76,
+        "right": 70,
+        "top": 70
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pixelsPerUnit": 100
+    },
+    {
+      "name": "bar_track",
+      "file": "bar_track.png",
+      "w": 320,
+      "h": 44,
+      "nineSlice": {
+        "left": 22,
+        "bottom": 22,
+        "right": 22,
+        "top": 22
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pixelsPerUnit": 100
+    },
+    {
+      "name": "bar_fill",
+      "file": "bar_fill.png",
+      "w": 320,
+      "h": 44,
+      "nineSlice": {
+        "left": 20,
+        "bottom": 20,
+        "right": 20,
+        "top": 20
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "pixelsPerUnit": 100
+    }
+  ]
+}

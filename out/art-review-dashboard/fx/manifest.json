@@ -1,0 +1,69 @@
+{
+  "generatedFrom": "fx-spec.json",
+  "effects": [
+    {
+      "name": "fx_hit_impact",
+      "type": "impact",
+      "frames": 8,
+      "size": 128,
+      "sheet": "fx_hit_impact_sheet.png",
+      "layout": "horizontal-strip",
+      "fps": 30,
+      "loop": false,
+      "blend": "additive",
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "color": "#FFE082"
+    },
+    {
+      "name": "fx_match_pop",
+      "type": "pop",
+      "frames": 8,
+      "size": 128,
+      "sheet": "fx_match_pop_sheet.png",
+      "layout": "horizontal-strip",
+      "fps": 24,
+      "loop": false,
+      "blend": "additive",
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "color": "#7DD8FF"
+    },
+    {
+      "name": "fx_combo_glow",
+      "type": "pulse",
+      "frames": 8,
+      "size": 128,
+      "sheet": "fx_combo_glow_sheet.png",
+      "layout": "horizontal-strip",
+      "fps": 12,
+      "loop": true,
+      "blend": "additive",
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "color": "#29A8E8"
+    },
+    {
+      "name": "fx_coin_get",
+      "type": "sparkle",
+      "frames": 8,
+      "size": 128,
+      "sheet": "fx_coin_get_sheet.png",
+      "layout": "horizontal-strip",
+      "fps": 24,
+      "loop": false,
+      "blend": "additive",
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      },
+      "color": "#FFC132"
+    }
+  ]
+}

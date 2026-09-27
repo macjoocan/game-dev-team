@@ -75,6 +75,21 @@
       "harness": "claude-code",
       "commit": "9e1aedd",
       "createdAt": "2026-09-18T09:47:04.150Z"
+    },
+    {
+      "key": "ui.sanabi-concept-kit@1",
+      "id": "ui.sanabi-concept-kit",
+      "version": 1,
+      "type": "ui-kit",
+      "title": "산나비 참고 게임 UI 콘셉트",
+      "status": "review",
+      "preview": "out/art-review-dashboard/ui-game/btn_primary_selected.png",
+      "comparePreview": "out/art-review-dashboard/ui/btn_primary_normal.png",
+      "artifact": "out/art-review-dashboard/index.html",
+      "qa": "out/art-review-dashboard/UI_GAME_QA.md",
+      "harness": "codex",
+      "commit": "167ad56",
+      "createdAt": "2026-09-27T14:43:19.824Z"
     }
   ]
 }
